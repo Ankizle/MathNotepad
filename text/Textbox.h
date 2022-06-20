@@ -6,12 +6,16 @@ extern "C" {
 #endif
 
 #include "general/Position.h"
+#include "general/Encoding.h"
 
 struct TextBox {
-    struct Position p;
+    struct Position pos;
     int len;
     int *txt;
 };
+
+struct TextBox* NewTextBox(struct Position);
+struct Encoding EncodeTextBox(struct TextBox*);
 
 #ifdef __cplusplus
 }
