@@ -1,5 +1,5 @@
-#ifndef NEWTEXTBOX_H_
-#define NEWTEXTBOX_H_
+#ifndef TEXTBOX_H_
+#define TEXTBOX_H_
 
 #ifdef __cplusplus
 extern "C" {

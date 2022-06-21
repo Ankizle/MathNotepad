@@ -1,6 +1,6 @@
 INCLUDE = -I$(CURDIR)
 
-CFLAGS = $(INCLUDE) -O4
+CFLAGS = -c $(INCLUDE) -O4
 
 SRC := $(wildcard */*.c)
 OBJ := $(patsubst %.c, %.o, $(SRC))

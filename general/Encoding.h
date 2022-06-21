@@ -8,7 +8,7 @@ extern "C" {
 struct Encoding {
     unsigned char* dat;
     unsigned int datl;
-}
+};
 
 #ifdef __cplusplus
 }
