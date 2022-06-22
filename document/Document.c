@@ -27,6 +27,10 @@ struct Document* OpenDocument(char* filename) {
     return d;
 }
 
+void CloseDocument(struct Document *d) {
+    fclose(d->file);
+}
+
 struct Encoding *EncodeDocument(struct Document *d) {
     struct Encoding *e = malloc(sizeof(struct Encoding));
     return e;

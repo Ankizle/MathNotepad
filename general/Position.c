@@ -2,7 +2,7 @@
 
 #include "Position.h"
 
-struct Position *NewPosition(int x, int y) {
+struct Position *NewPosition(double x, double y) {
     struct Position *p = malloc(sizeof(struct Position));
     p->x = x;
     p->y = y;

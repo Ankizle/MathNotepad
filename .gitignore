@@ -3,5 +3,8 @@
 *.so
 node_modules/
 
+dist-webview/
+out/
+
 .vscode/*
 !.vscode/*.json

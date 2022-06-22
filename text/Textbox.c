@@ -5,7 +5,7 @@
 
 #include "Textbox.h"
 
-struct TextBox *NewTextBox(struct Position p) {
+struct TextBox *NewTextBox(struct Position *p) {
     struct TextBox* tb = malloc(sizeof(struct TextBox));
     tb->pos = p;
     tb->len = 0;

@@ -8,10 +8,10 @@ extern "C" {
 #include "Encoding.h"
 
 struct Position {
-    int x, y;
+    double x, y;
 };
 
-struct Position *NewPosition(int, int);
+struct Position *NewPosition(double, double);
 struct Encoding *EncodePosition(struct Position*);
 
 #ifdef __cplusplus

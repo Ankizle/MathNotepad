@@ -9,12 +9,12 @@ extern "C" {
 #include "general/Encoding.h"
 
 struct TextBox {
-    struct Position pos;
+    struct Position *pos;
     int len;
     int *txt;
 };
 
-struct TextBox *NewTextBox(struct Position);
+struct TextBox *NewTextBox(struct Position*);
 struct Encoding *EncodeTextBox(struct TextBox*);
 
 #ifdef __cplusplus

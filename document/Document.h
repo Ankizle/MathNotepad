@@ -27,6 +27,7 @@ struct Document {
 
 struct Document *NewDocument(char*);
 struct Document *OpenDocument(char*);
+void CloseDocument(struct Document*);
 struct Encoding *EncodeDocument(struct Document*);
 
 #ifdef __cplusplus
