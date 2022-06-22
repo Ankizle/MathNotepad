@@ -5,7 +5,7 @@
 
 #include "Textbox.h"
 
-struct TextBox* NewTextBox(struct Position p) {
+struct TextBox *NewTextBox(struct Position p) {
     struct TextBox* tb = malloc(sizeof(struct TextBox));
     tb->pos = p;
     tb->len = 0;
@@ -14,8 +14,8 @@ struct TextBox* NewTextBox(struct Position p) {
     return tb;
 }
 
-struct Encoding EncodeTextBox(struct TextBox* tb) {
-    struct Encoding pose = EncodePosition(tb->pos);
-    struct Encoding full;
+struct Encoding *EncodeTextBox(struct TextBox* tb) {
+    struct Encoding *pose = EncodePosition(tb->pos);
+    struct Encoding *full = malloc(sizeof(struct Encoding));
     return full;
 }

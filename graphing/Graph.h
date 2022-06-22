@@ -13,7 +13,7 @@ struct RelationNode {
     char* valv; //value of node (for variables)
 };
 
-struct RelationNode* ParseRelationText(char*);
+struct RelationNode *ParseRelationText(char*);
 
 #ifdef __cplusplus
 }

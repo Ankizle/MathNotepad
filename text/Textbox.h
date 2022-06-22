@@ -14,8 +14,8 @@ struct TextBox {
     int *txt;
 };
 
-struct TextBox* NewTextBox(struct Position);
-struct Encoding EncodeTextBox(struct TextBox*);
+struct TextBox *NewTextBox(struct Position);
+struct Encoding *EncodeTextBox(struct TextBox*);
 
 #ifdef __cplusplus
 }

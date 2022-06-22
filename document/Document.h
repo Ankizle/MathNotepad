@@ -15,18 +15,19 @@ extern "C" {
 struct Document {
     FILE* file;
 
-    struct TextBox* texts;
+    struct TextBox **texts;
     unsigned int textl;
 
-    struct Drawing* drawings;
+    struct Drawing **drawings;
     unsigned int drawingsl;
 
-    struct RelationNode* graphs;
+    struct RelationNode **graphs;
     unsigned int graphsl;
 };
 
-struct Document NewDocument(char*);
-struct Encoding EncodeDocument(struct Document);
+struct Document *NewDocument(char*);
+struct Document *OpenDocument(char*);
+struct Encoding *EncodeDocument(struct Document*);
 
 #ifdef __cplusplus
 }

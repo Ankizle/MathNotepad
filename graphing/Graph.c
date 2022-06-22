@@ -7,9 +7,9 @@
 //lower precedence appears higher in the list
 unsigned char* ops[] = {"=", "+-", "*/", "^"};
 
-struct RelationNode* ParseRelationText(char* txt) {
+struct RelationNode *ParseRelationText(char* txt) {
 
-    struct RelationNode* cur = malloc(sizeof(struct RelationNode));
+    struct RelationNode *cur = malloc(sizeof(struct RelationNode));
 
     //loop through all the precedence levels
     for (int i = 0; i < (sizeof(ops) / sizeof(unsigned char*)); i++) {
