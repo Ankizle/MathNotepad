@@ -1,11 +1,12 @@
 import * as vscode from "vscode";
 import { Editor } from "./editor";
+import backend from "./backend";
 
 const ref = require("ref-napi");
 
-export class VSCDocument implements vscode.CustomDocument {
+export class NotebookDoc implements vscode.CustomDocument {
 
-    public editor;
+    public editor: Editor;
     public uri: vscode.Uri;
 
     constructor(editor: Editor, uri: vscode.Uri) {
@@ -14,6 +15,6 @@ export class VSCDocument implements vscode.CustomDocument {
     }
 
     dispose(): void {
-        throw new Error("Method not implemented.");
+        backend.CloseNotebook(this.editor.ntbdoc);
     }
 }

@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "Document.h"
+#include "Notebook.h"
 #include "general/Encoding.h"
 
-struct Document *NewDocument(char* filename) {
-    struct Document *d = malloc(sizeof(struct Document));
+struct Notebook *NewNotebook(char* filename) {
+    struct Notebook *d = malloc(sizeof(struct Notebook));
 
     FILE* f = fopen(filename, "w+");
 
@@ -16,8 +16,8 @@ struct Document *NewDocument(char* filename) {
     return d;
 }
 
-struct Document* OpenDocument(char* filename) {
-    struct Document *d = malloc(sizeof(struct Document));
+struct Notebook* OpenNotebook(char* filename) {
+    struct Notebook *d = malloc(sizeof(struct Notebook));
 
     FILE* f = fopen(filename, "r+");
     d->file = f;
@@ -27,11 +27,11 @@ struct Document* OpenDocument(char* filename) {
     return d;
 }
 
-void CloseDocument(struct Document *d) {
+void CloseNotebook(struct Notebook *d) {
     fclose(d->file);
 }
 
-struct Encoding *EncodeDocument(struct Document *d) {
+struct Encoding *EncodeNotebook(struct Notebook *d) {
     struct Encoding *e = malloc(sizeof(struct Encoding));
     return e;
 }

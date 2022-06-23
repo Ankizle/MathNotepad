@@ -12,6 +12,7 @@ shared: $(OBJ)
 
 vscode: shared
 	mv $(OUT) frontend/vscode/src
+	cd frontend/vscode/ && npm run compile
 
 clean:
 	rm -r $(OBJ)

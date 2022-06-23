@@ -11,8 +11,8 @@ module.exports = {
 
                 // add other locations.
                 pathConfigs.patterns.unshift({ 
-                    from: 'img',  
-                    to: `${to}/img`,
+                    from: 'icons',  
+                    to: `${to}/icons`,
                 })
                 
                 return [pathConfigs];

@@ -12,7 +12,7 @@ extern "C" {
 #include "graphing/Graph.h"
 #include "general/Encoding.h"
 
-struct Document {
+struct Notebook {
     FILE* file;
 
     struct TextBox **texts;
@@ -25,10 +25,10 @@ struct Document {
     unsigned int graphsl;
 };
 
-struct Document *NewDocument(char*);
-struct Document *OpenDocument(char*);
-void CloseDocument(struct Document*);
-struct Encoding *EncodeDocument(struct Document*);
+struct Notebook *NewNotebook(char*);
+struct Notebook *OpenNotebook(char*);
+void CloseNotebook(struct Notebook*);
+struct Encoding *EncodeNotebook(struct Notebook*);
 
 #ifdef __cplusplus
 }
