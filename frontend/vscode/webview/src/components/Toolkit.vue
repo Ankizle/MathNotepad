@@ -1,30 +1,40 @@
 <template>
     <ul class="toolkit-menu">
-        <li class="toolkit-item">
-            <Icon typ="Type" class="icon" />
-        </li>
-        <li class="toolkit-item">
-            <Icon typ="Pen" class="icon" />
-        </li>
-        <li class="toolkit-item">
-            <Icon typ="Highlight" class="icon" />
-        </li>
-        <li class="toolkit-item">
-            <Icon typ="Erase" class="icon" />
-        </li>
-        <li class="toolkit-item">
-            <Icon typ="Graph" class="icon" />
-        </li>
+        <li class="toolkit-item Type"><Type/></li>
+        <li class="toolkit-item Pen"><Pen/></li>
+        <li class="toolkit-item Highlight"><Highlight /></li>
+        <li class="toolkit-item Erase"><Erase /></li>
+        <li class="toolkit-item Graph"><Graph /></li>
     </ul>
 </template>
 
 <script>
-import Icon from "./Icon"
+import Type from "./Toolkit/Type";
+import Pen from "./Toolkit/Pen";
+import Highlight from "./Toolkit/Highlight";
+import Erase from "./Toolkit/Erase";
+import Graph from "./Toolkit/Graph";
+
+import state from "@/state";
 
 export default {
     name: "Notebook-Toolkit",
     components: {
-        Icon,
+        Type,
+        Pen,
+        Highlight,
+        Erase,
+        Graph,
+    },
+    data() {
+        return {
+            state,
+        };
+    },
+    watch: {
+        "state.active_toolkit": function(n, o) {
+            console.log(n, o)
+        }
     },
 }
 </script>
@@ -39,10 +49,6 @@ export default {
     border-radius: 0 1em 1em 0;
     margin: 2em 0;
 }
-.toolkit-item {
-    padding: 1em;
-    margin: 0;
-}
 
 /*make the first and last have the correct border radii*/
 .toolkit-item:first-of-type {
@@ -54,12 +60,8 @@ export default {
 /****/
 
 .toolkit-item:hover {
-    background-color: rgb(37, 40, 44);
-}
-.toolkit-item:hover > .icon {
-    background: rgb(82, 140, 215);
-}
-.icon {
-    background: rgb(125, 172, 234);
+    transition: 0.3s;
+    filter: brightness(70%);
+    background-color: rgb(44, 48, 53);
 }
 </style>
