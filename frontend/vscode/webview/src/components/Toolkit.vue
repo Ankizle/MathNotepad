@@ -1,10 +1,10 @@
 <template>
     <ul class="toolkit-menu">
-        <li class="toolkit-item Type"><Type/></li>
-        <li class="toolkit-item Pen"><Pen/></li>
-        <li class="toolkit-item Highlight"><Highlight /></li>
-        <li class="toolkit-item Erase"><Erase /></li>
-        <li class="toolkit-item Graph"><Graph /></li>
+        <li id="Type" class="toolkit-item" :style="isactive(`Type`)"><Type/></li>
+        <li id="Pen" class="toolkit-item" :style="isactive(`Pen`)"><Pen/></li>
+        <li id="Highlight" class="toolkit-item" :style="isactive(`Highlight`)"><Highlight /></li>
+        <li id="Erase" class="toolkit-item" :style="isactive(`Erase`)"><Erase /></li>
+        <li id="Graph" class="toolkit-item" :style="isactive(`Graph`)"><Graph /></li>
     </ul>
 </template>
 
@@ -31,10 +31,10 @@ export default {
             state,
         };
     },
-    watch: {
-        "state.active_toolkit": function(n, o) {
-            console.log(n, o)
-        }
+    methods: {
+        isactive(typ) {
+            return state.active_toolkit == typ ? `width: 5em; border-radius: 0 1em 1em 0;` : ``
+        },
     },
 }
 </script>
@@ -43,11 +43,14 @@ export default {
 .toolkit-menu {
     list-style-type: none;
     padding: 0;
-    background-color: rgb(49, 53, 57);
     margin: 0;
     display: inline-block;
     border-radius: 0 1em 1em 0;
     margin: 2em 0;
+    width: 4em;
+}
+.toolkit-item {
+    background-color: rgb(49, 53, 57);
 }
 
 /*make the first and last have the correct border radii*/
@@ -60,7 +63,6 @@ export default {
 /****/
 
 .toolkit-item:hover {
-    transition: 0.3s;
     filter: brightness(70%);
     background-color: rgb(44, 48, 53);
 }

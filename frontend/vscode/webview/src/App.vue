@@ -1,25 +1,31 @@
 <template>
     <div id="topl">
-        <Toolkit></Toolkit>
+        <Toolkit class="toolkit"></Toolkit>
+        <Canvas></Canvas>
     </div>
 </template>
 
 <script>
-import Toolkit from "./components/Toolkit"
+import Toolkit from "./components/Toolkit";
+import Canvas from "./components/Canvas";
 
 export default {
     name: "App",
     components: {
         Toolkit,
+        Canvas,
     },
 }
 </script>
 
 <style scoped>
 #topl {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     background-color: white;
     margin: 0;
+}
+.toolkit {
+    position: fixed;
 }
 </style>

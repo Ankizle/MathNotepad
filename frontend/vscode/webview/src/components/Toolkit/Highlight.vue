@@ -1,5 +1,5 @@
 <template>
-    <div class="cont">
+    <div class="cont" v-on:click="click">
         <Icon typ="Highlight" />
     </div>
 </template>
@@ -18,6 +18,11 @@ export default {
             state,
         };
     },
+    methods: {
+        click() {
+            this.state.active_toolkit = "Highlight";
+        }
+    }
 }
 </script>
 
