@@ -19,22 +19,18 @@ export default {
     mounted() {
         this.canvas = document.getElementById("canvas");
         this.ctx = this.canvas.getContext("2d");
-        this.ctx.lineWidth = 5;
         state.ctx = this.ctx;
 
         this.hammer = new Hammer.Manager(this.canvas);
         state.hammer = this.hammer;
 
         this.hammer.add(new Hammer.Pan({ threshold: 0, pointers: 0, }));
-        this.hammer.on("panstart", e => {
-            events.emit("panstart", e);
-        });
-        this.hammer.on("panmove", e => {
-            events.emit("panmove", e);
-        });
-        this.hammer.on("panend", e => {
-            events.emit("panend", e);
-        });
+        this.hammer.on("panstart", e => events.emit("panstart", e));
+        this.hammer.on("panmove", e => events.emit("panmove", e));
+        this.hammer.on("panend", e => events.emit("panend", e));
+
+        this.hammer.add(new Hammer.Tap());
+        this.hammer.on("tap", e => events.emit("tap", e));
     },
     data() {
         return {

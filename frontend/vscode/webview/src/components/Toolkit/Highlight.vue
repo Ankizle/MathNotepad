@@ -13,6 +13,7 @@ export default {
     components: {
         Icon,
     },
+    mounted() {},
     data() {
         return {
             state,
