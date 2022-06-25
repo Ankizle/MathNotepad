@@ -7,7 +7,7 @@ const viewtype = "mntb.notebook";
 export class Editor implements vscode.CustomEditorProvider<NotebookDoc> {
 
     public ctx: vscode.ExtensionContext;
-    public ntbdoc: any; //notebook document ()
+    public ntbdoc: any; //notebook document
 
     constructor(ctx: vscode.ExtensionContext) {
         this.ctx = ctx;
@@ -42,6 +42,8 @@ export class Editor implements vscode.CustomEditorProvider<NotebookDoc> {
 			enableScripts: true,
 		};
         wv.webview.html = this.getHtml(wv.webview);
+
+        wv.webview.onDidReceiveMessage(this.onMessage);
     }
 
     private getHtml(wv: vscode.Webview) {
@@ -83,5 +85,13 @@ export class Editor implements vscode.CustomEditorProvider<NotebookDoc> {
             </html> 
         `;  
     }
+
+    private onMessage(e: any) {
+        switch (e.command) {
+            case "save":
+                console.log(e.text);
+                break;
+        }
+	}
 
 }

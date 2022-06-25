@@ -1,10 +1,10 @@
 <template>
     <ul class="toolkit-menu">
-        <li id="Type" class="toolkit-item" :style="isactive(`Type`)"><Type/></li>
-        <li id="Pen" class="toolkit-item" :style="isactive(`Pen`)"><Pen/></li>
-        <li id="Highlight" class="toolkit-item" :style="isactive(`Highlight`)"><Highlight /></li>
-        <li id="Erase" class="toolkit-item" :style="isactive(`Erase`)"><Erase /></li>
-        <li id="Graph" class="toolkit-item" :style="isactive(`Graph`)"><Graph /></li>
+        <li id="Type" :class="`toolkit-item ${isactive(`Type`)}`"><Type/></li>
+        <li id="Pen" :class="`toolkit-item ${isactive(`Pen`)}`"><Pen/></li>
+        <li id="Highlight" :class="`toolkit-item ${isactive(`Highlight`)}`"><Highlight /></li>
+        <li id="Erase" :class="`toolkit-item ${isactive(`Erase`)}`"><Erase /></li>
+        <li id="Graph" :class="`toolkit-item ${isactive(`Graph`)}`"><Graph /></li>
     </ul>
 </template>
 
@@ -33,7 +33,7 @@ export default {
     },
     methods: {
         isactive(typ) {
-            return state.active_toolkit == typ ? `width: 5em; border-radius: 0 1em 1em 0;` : ``
+            return state.active_toolkit == typ ? "bigger-toolkit-item" : "";
         },
     },
 }
@@ -47,10 +47,17 @@ export default {
     display: inline-block;
     border-radius: 0 1em 1em 0;
     margin: 2em 0;
-    width: 4em;
 }
 .toolkit-item {
+    width: 4em;
     background-color: rgb(49, 53, 57);
+    border-top: 1px solid rgb(77, 81, 86);
+
+    transition: width .25s, border-radius .3s;
+}
+.bigger-toolkit-item {
+    width: 5em;
+    border-radius: 0 1em 1em 0 !important;
 }
 
 /*make the first and last have the correct border radii*/
@@ -61,9 +68,4 @@ export default {
     border-radius: 0 0 1em 0;
 }
 /****/
-
-.toolkit-item:hover {
-    filter: brightness(70%);
-    background-color: rgb(44, 48, 53);
-}
 </style>

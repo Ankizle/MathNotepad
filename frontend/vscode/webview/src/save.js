@@ -1,6 +1,9 @@
-// import * as Vue from "vue";
+import state from "./state";
 import file from "./file";
 
 export default function save() {
-    console.log(file);
+    state.vscode.postMessage({
+        command: "save",
+        text: JSON.stringify(file),
+    });
 }

@@ -9,7 +9,8 @@ import Icon from "./ToolkitIcon.vue"
 import state from "@/state";
 import file from "@/file";
 import events from "@/events";
-import stroke from "@/stroke";
+import Stroke from "@/stroke";
+import user from "@/user";
 
 export default {
     name: "Toolkit-Highlight",
@@ -17,46 +18,41 @@ export default {
         Icon,
     },
     mounted() {
+
+        let stroke;
+
         events.listen("panstart", e => {
             if (state.active_toolkit != "Highlight") return;
 
-            state.pan.stroke = [e.center]; //store the stroke in the state
-            this.stroke(e.center, e.center);
+            stroke = new Stroke(user.size.highlight, user.color.highlight, state.ctxh);
+            stroke.add(e.center);
         });
         events.listen("panmove", e => {
             if (state.active_toolkit != "Highlight") return;
-
-            let prev = state.pan.stroke.at(-1);
-
-            state.pan.stroke.push(e.center);
-            this.stroke(e.center, prev);
+            stroke.add(e.center);
         });
         events.listen("panend", e => {
             if (state.active_toolkit != "Highlight") return;
 
-            let prev = state.pan.stroke.at(-1);
-
-            state.pan.stroke.push(e.center);
-            this.stroke(e.center, prev);
-            file.highlighter.strokes.push(state.pan.stroke);
+            stroke.add(e.center);
+            file.highlighter.strokes.push(stroke);
         });
         events.listen("tap", e => {
             if (state.active_toolkit != "Highlight") return;
-            this.stroke(e.center, e.center);
-            file.highlighter.strokes.push([e.center]);
+
+            stroke = new Stroke(user.size.highlight, user.color.highlight, state.ctxh);
+
+            stroke.add(e.center);
+            file.highlighter.strokes.push(stroke);
         });
     },
     methods: {
         click() {
-
-            let sty = `rgb(${file.highlighter.color.join(",")})`;
-
-            state.ctxh.strokeStyle = sty;
-            state.ctxh.lineWidth = file.highlighter.size;
+            state.ctxh.lineWidth = user.size.highlight;
+            state.ctxh.strokeStyle = user.color.highlight;
 
             state.active_toolkit = "Highlight";
         },
-        stroke: (c, p) => stroke(c, p),
     },
 }
 </script>

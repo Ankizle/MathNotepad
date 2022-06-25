@@ -17,4 +17,5 @@ export class NotebookDoc implements vscode.CustomDocument {
     dispose(): void {
         backend.CloseNotebook(this.editor.ntbdoc);
     }
+
 }

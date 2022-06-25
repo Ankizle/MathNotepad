@@ -1,13 +1,22 @@
-import state from "./state";
+export default class Stroke {
+    constructor(size, color, ctx) {
+        this.size = size;
+        this.color = color;
+        this.ctx = ctx;
+        this.paths = []
+    }
 
-export default function stroke(c, p) {
+    addPath(x, y) {
+        this.paths.push({ x, y });
+    }
 
-    let ctx = state.ctx;
+    add(c) {
+        let p = this.paths.length == 0 ? c : this.paths.at(-1); //get the previously drawn point
 
-    if (state.active_toolkit == "Highlight") ctx = state.ctxh;
-
-    ctx.beginPath();
-    ctx.moveTo(p.x, p.y);
-    ctx.lineTo(c.x, c.y);
-    ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.moveTo(p.x, p.y);
+        this.ctx.lineTo(c.x, c.y);
+        this.ctx.stroke();
+        this.addPath(c.x, c.y);
+    }
 }
