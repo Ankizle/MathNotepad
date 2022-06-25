@@ -7,7 +7,9 @@
 <script>
 import Icon from "./ToolkitIcon.vue";
 import state from "@/state";
+import file from "@/file";
 import events from "@/events";
+import stroke from "@/stroke";
 
 export default {
     name: "Toolkit-Pen",
@@ -16,55 +18,42 @@ export default {
     },
     mounted() {
         events.listen("panstart", e => {
-            if (this.state.active_toolkit != "Pen") return;
+            if (state.active_toolkit != "Pen") return;
 
-            this.state.pan.stroke = [e.center]; //store the stroke in the state
+            state.pan.stroke = [e.center]; //store the stroke in the state
             this.stroke(e.center, e.center);
         });
         events.listen("panmove", e => {
-            if (this.state.active_toolkit != "Pen") return;
+            if (state.active_toolkit != "Pen") return;
 
-            let prev = this.state.pan.stroke.at(-1);
+            let prev = state.pan.stroke.at(-1);
 
-            this.state.pan.stroke.push(e.center);
+            state.pan.stroke.push(e.center);
             this.stroke(e.center, prev);
         });
         events.listen("panend", e => {
-            if (this.state.active_toolkit != "Pen") return;
+            if (state.active_toolkit != "Pen") return;
 
-            let prev = this.state.pan.stroke.at(-1);
+            let prev = state.pan.stroke.at(-1);
 
-            this.state.pan.stroke.push(e.center);
+            state.pan.stroke.push(e.center);
             this.stroke(e.center, prev);
-            this.state.pen.strokes.push(this.state.pen.stroke);
+            file.pen.strokes.push(state.pan.stroke);
         });
         events.listen("tap", e => {
-            if (this.state.active_toolkit != "Pen") return;
+            if (state.active_toolkit != "Pen") return;
             this.stroke(e.center, e.center);
-            this.state.pen.strokes.push([e.center]);
+            file.pen.strokes.push([e.center]);
         });
-    },
-    data() {
-        return {
-            state,
-        };
     },
     methods: {
         click() {
-            this.state.ctx.lineWidth = this.state.pen.size;
-            this.state.active_toolkit = "Pen";
-        },
-        stroke(c, p) {
-            this.state.ctx.beginPath();
-            this.state.ctx.arc(p.x, p.y, this.state.pen.size / 2, 2 * Math.PI, false);
-            this.state.ctx.closePath();
-            this.state.ctx.fill();
+            state.ctx.strokeStyle = file.pen.color;
+            state.ctx.lineWidth = file.pen.size;
 
-            this.state.ctx.beginPath();
-            this.state.ctx.moveTo(p.x, p.y);
-            this.state.ctx.lineTo(c.x, c.y);
-            this.state.ctx.stroke();
+            state.active_toolkit = "Pen";
         },
+        stroke: (c, p) => stroke(c, p),
     },
 }
 </script>

@@ -8,6 +8,7 @@
 <script>
 import Toolkit from "./components/Toolkit";
 import Canvas from "./components/Canvas";
+import save from "./save";
 
 export default {
     name: "App",
@@ -15,6 +16,10 @@ export default {
         Toolkit,
         Canvas,
     },
+    mounted() {
+        setTimeout(this.save, 10000);
+    },
+    methods: { save, },
 }
 </script>
 
@@ -27,5 +32,6 @@ export default {
 }
 .toolkit {
     position: fixed;
+    z-index: 2;
 }
 </style>

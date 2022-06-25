@@ -7,10 +7,18 @@ extern "C" {
 
 #include "general/Position.h"
 
+struct DrawNode {
+    struct Position* pos;
+    struct DrawNode* next;
+}
+
 struct Drawing {
-    struct Position* posl; //list of positions recorded
+    struct DrawNode* start;
     char psize; //pen size
 };
+
+struct Drawing *NewDrawing();
+struct Drawing *EncodeDrawing(struct Drawing*);
 
 #ifdef __cplusplus
 }
