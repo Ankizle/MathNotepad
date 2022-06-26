@@ -8,7 +8,7 @@ export default class Stroke {
         this.size = size;
         this.color = color;
         this.ctx = ctx;
-        this.paths = []
+        this.paths = [];
         this.chunks = new Set();
     }
 
@@ -18,12 +18,15 @@ export default class Stroke {
         );
     }
 
-    redraw() {
+    redraw(chunk) {
         if (this.iserased) return;
 
         let prev = this.paths[0];
-        for (let i of this.paths)
-            this.draw(i, prev);
+        for (let i of this.paths) {
+            if (chunk.has(i.x, i.y))
+                this.draw(i, prev);
+            prev = i;
+        }
     }
 
     addPath(c, p) {
@@ -33,11 +36,10 @@ export default class Stroke {
         for (let i of touched) {
             if (!this.chunks.has(i)) {
                 this.chunks.add(i);
-                events.listen(`redraw ${i}`, () => this.redraw());
+                events.listen(`${this.ctx.name} redraw ${i}`, () => this.redraw(i));
             }
 
             events.listen(`erase ${i}`, v => {
-
                 if (this.iserased) return;
     
                 /*
@@ -68,21 +70,20 @@ export default class Stroke {
         this.iserased = true;
         this.sto[this.idx] = [];
 
-        for (let i of this.chunks) {
+        for (let i of this.chunks)
             i.clear();
-            events.emit(`redraw ${i}`);
-        }
+        for (let i of this.chunks)
+            events.emit(`${this.ctx.name} redraw ${i}`);
     }
 
     draw(c, p) {
         this.ctx.beginPath();
         this.ctx.moveTo(p.x, p.y);
-        this.ctx.lineTo(c.x, c.y);
+        this.ctx.quadraticCurveTo(p.x - 10, p.y - 10, c.x, c.y);
         this.ctx.stroke();
     }
 
-    add(c) {
-        let p = this.paths.length == 0 ? c : this.paths.at(-1); //get the previously drawn point
+    add(c, p) {
         this.draw(c, p);
         this.addPath(c, p);
     }

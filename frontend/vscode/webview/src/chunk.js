@@ -6,7 +6,7 @@ export default class Chunk {
         this.ctx = ctx;
     }
 
-    static size = 100;
+    static size = 50;
 
     static getchunk(x, y, ctx) {
         //chunk size is 100x100 pixels
@@ -16,6 +16,9 @@ export default class Chunk {
     static through(x, y, width, ctx) {
         //TODO
         return [
+            this.getchunk(x - Chunk.size, y - Chunk.size, ctx),
+            this.getchunk(x, y - Chunk.size, ctx),
+            this.getchunk(x - Chunk.size, y, ctx),
             this.getchunk(x, y, ctx),
             this.getchunk(x + Chunk.size, y, ctx),
             this.getchunk(x, y + Chunk.size, ctx),
@@ -23,13 +26,27 @@ export default class Chunk {
         ];
     }
 
-    clear() {
+    async clear() {
         this.ctx.clearRect(this.x * Chunk.size, this.y * Chunk.size, Chunk.size, Chunk.size);
     }
 
-    display() {
+    async display() {
         this.ctx.rect(this.x * Chunk.size, this.y * Chunk.size, Chunk.size, Chunk.size);
         this.ctx.stroke();
+    }
+
+    relcoords(x, y) {
+        return { x: x % Chunk.size, y: y % Chunk.size };
+    }
+
+    has(x, y) {
+        //determine if a point is in a chunk
+        return (
+            x >= this.x * Chunk.size &&
+            x < (this.x + 1) * Chunk.size &&
+            y >= this.y * Chunk.size &&
+            y < (this.y + 1) * Chunk.size
+        );
     }
 
     toString() {

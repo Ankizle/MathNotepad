@@ -21,28 +21,28 @@ export default {
 
         let stroke;
 
-        events.listen("panstart", e => {
+        events.listen("panstart", d => {
             if (state.active_toolkit != "Pen") return;
 
             stroke = new Stroke(file.pen.strokes, user.size.pen, user.color.pen, state.ctx);
-            stroke.add(e.center);
+            stroke.add(d[0], d[0]);
         });
-        events.listen("panmove", e => {
+        events.listen("panmove", d => {
             if (state.active_toolkit != "Pen") return;
-            stroke.add(e.center);
+            stroke.add(...d.points);
         });
-        events.listen("panend", e => {
+        events.listen("panend", d => {
             if (state.active_toolkit != "Pen") return;
 
-            stroke.add(e.center);
+            stroke.add(...d);
             file.pen.strokes.push(stroke);
         });
         events.listen("tap", e => {
             if (state.active_toolkit != "Pen") return;
 
-            stroke = new Stroke(user.size.pen, user.color.pen, state.ctx);
+            stroke = new Stroke(file.pen.strokes, user.size.pen, user.color.pen, state.ctx);
 
-            stroke.add(e.center);
+            stroke.add(e, e);
             file.pen.strokes.push(stroke);
         });
     },

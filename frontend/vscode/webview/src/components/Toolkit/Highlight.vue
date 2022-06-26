@@ -21,26 +21,26 @@ export default {
 
         let stroke;
 
-        events.listen("panstart", e => {
+        events.listen("panstart", d => {
             if (state.active_toolkit != "Highlight") return;
 
             stroke = new Stroke(file.highlighter.strokes, user.size.highlight, user.color.highlight, state.ctxh);
-            stroke.add(e.center);
+            stroke.add(d[0], d[0]);
         });
-        events.listen("panmove", e => {
+        events.listen("panmove", d => {
             if (state.active_toolkit != "Highlight") return;
-            stroke.add(e.center);
+            stroke.add(...d);
         });
-        events.listen("panend", e => {
+        events.listen("panend", d => {
             if (state.active_toolkit != "Highlight") return;
 
-            stroke.add(e.center);
+            stroke.add(...d);
             file.highlighter.strokes.push(stroke);
         });
         events.listen("tap", e => {
             if (state.active_toolkit != "Highlight") return;
 
-            stroke = new Stroke(user.size.highlight, user.color.highlight, state.ctxh);
+            stroke = new Stroke(file.highlighter.strokes, user.size.highlight, user.color.highlight, state.ctxh);
 
             stroke.add(e.center);
             file.highlighter.strokes.push(stroke);

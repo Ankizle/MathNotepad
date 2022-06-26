@@ -20,11 +20,11 @@ export default {
         events.listen("panmove", e => {
             if (this.state.active_toolkit != "Erase") return;
 
-            let chunks = Chunk.through(e.center.x, e.center.y, user.size.erase, null);
+            let chunks = Chunk.through(e[0].x, e[0].y, user.size.erase, null);
 
             for (let i of chunks) {
                 events.emit(`erase ${i}`, {
-                    coords: e.center,
+                    coords: e,
                     size: user.size.erase,
                 });
             }
