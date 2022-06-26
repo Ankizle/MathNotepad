@@ -15,9 +15,10 @@ export default {
         Icon,
     },
     mounted() {
-        events.listen("mouse down", (t) => {
+        events.listen("tap", e => {
             if (this.state.active_toolkit != "Type") return;
-            let coords = [t.e.layerX, t.e.layerY];
+            
+            let coords = [e.center.x, e.center.y];
             console.log(coords);
         });
     },

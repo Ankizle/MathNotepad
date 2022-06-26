@@ -16,9 +16,6 @@ export default {
         Toolkit,
         Canvas,
     },
-    mounted() {
-        setTimeout(this.save, 10000);
-    },
     methods: { save, },
 }
 </script>

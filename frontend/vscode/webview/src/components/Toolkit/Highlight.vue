@@ -24,7 +24,7 @@ export default {
         events.listen("panstart", e => {
             if (state.active_toolkit != "Highlight") return;
 
-            stroke = new Stroke(user.size.highlight, user.color.highlight, state.ctxh);
+            stroke = new Stroke(file.highlighter.strokes, user.size.highlight, user.color.highlight, state.ctxh);
             stroke.add(e.center);
         });
         events.listen("panmove", e => {

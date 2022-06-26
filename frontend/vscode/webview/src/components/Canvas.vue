@@ -22,7 +22,6 @@ export default {
     name: "Notebook-Canvas",
     components: {},
     mounted() {
-
         this.wrap = document.getElementById("wrapper");
 
         this.canvas = document.getElementById("norm");
