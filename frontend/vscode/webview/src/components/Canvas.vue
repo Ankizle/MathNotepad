@@ -58,6 +58,9 @@ export default {
     width: 100%;
     height: 100%;
 }
+#wrapper > input {
+    position: absolute;
+}
 svg > path {
     fill: none;
 }

@@ -12,6 +12,7 @@
     "hammerjs": "^2.0.8",
     "html2canvas": "^1.4.1",
     "katex": "^0.16.0",
+    "path-intersection": "^2.2.1",
     "vue": "^3.2.13"
   },
   "devDependencies": {

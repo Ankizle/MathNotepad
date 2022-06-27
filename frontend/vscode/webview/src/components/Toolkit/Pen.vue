@@ -23,7 +23,7 @@ export default {
 
         events.listen("panstart", e => {
             if (state.active_toolkit != "Pen") return;
-            stroke = new Stroke(user.size.pen, user.color.pen, user.opacity.pen);
+            stroke = new Stroke("pen", user.size.pen, user.color.pen, user.opacity.pen);
             stroke.add(e.center);
         });
         events.listen("panmove", e => {

@@ -1,11 +1,14 @@
+import events from "./events";
 import file from "./file";
 import state from "./state";
+import * as intersect from "path-intersection";
 
 export default class Stroke {
 
     static tension = 1;
 
-    constructor(size, color, opacity) {
+    constructor(typ, size, color, opacity) {
+        this.typ = typ;
         this.size = size;
         this.color = color;
         this.opacity = opacity
@@ -15,13 +18,25 @@ export default class Stroke {
         Stroke.setpath(this, this.path);
         this.path.style = `opacity:${opacity}`;
         state.maincvs.appendChild(this.path);
+
+        events.listen("erase", eraser => {
+            if (typ == "erase" || this.erased) return; //we don't want to erase the eraser
+            if (intersect(eraser.fit(), this.fit()).length != 0)
+                events.emit("toerase", this);
+        });
     }
 
-    static setpath(elem, path) {
-        path.setAttributeNS(null, "stroke-width", elem.size);
-        path.setAttributeNS(null, "stroke", elem.color);
+    static setpath(elem, path, size, color) {
+        path.setAttributeNS(null, "stroke-width", size ?? elem.size);
+        path.setAttributeNS(null, "stroke", color ?? elem.color);
         path.setAttributeNS(null, "stroke-linecap", "round");
         path.setAttributeNS(null, "stroke-linejoin", "round");
+    }
+
+    changeopacity(f) {
+        let newop = f(this.opacity);
+        this.opacity = newop;
+        this.path.style = `opacity:${this.opacity};`
     }
 
     mid(a, b) {
@@ -58,18 +73,20 @@ export default class Stroke {
         return path;
       }
 
-    draw() {
+    async draw() {
         if (this.paths.length <= 1) return;
         this.path.setAttributeNS(null, "d", this.fit());
     }
 
     erase() {
         this.path.remove();
+        this.erased = true;
+        file.strokes[this.strokeeidx] = null;
     }
 
     end() {
-        this.draw()
-        file.strokes.push(this);
+        this.draw();
+        this.strokeidx = file.strokes.push(this);
     }
 
     add(c) {

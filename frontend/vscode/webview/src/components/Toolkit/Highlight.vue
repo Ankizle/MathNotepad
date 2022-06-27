@@ -21,7 +21,7 @@ export default {
 
         events.listen("panstart", e => {
             if (state.active_toolkit != "Highlight") return;
-            stroke = new Stroke(user.size.highlight, user.color.highlight, user.opacity.highlight);
+            stroke = new Stroke("highlight", user.size.highlight, user.color.highlight, user.opacity.highlight);
             stroke.add(e.center);
         });
         events.listen("panmove", e => {
