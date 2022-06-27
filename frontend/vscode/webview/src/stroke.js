@@ -2,20 +2,24 @@ import file from "./file";
 import state from "./state";
 
 export default class Stroke {
+
+    static tension = 1;
+
     constructor(size, color, opacity) {
         this.size = size;
         this.color = color;
         this.opacity = opacity
         this.paths = [];
 
-        this.svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        this.svg.style = `opacity:${opacity}`;
-        state.maincvs.appendChild(this.svg);
+        this.path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        Stroke.setpath(this, this.path);
+        this.path.style = `opacity:${opacity}`;
+        state.maincvs.appendChild(this.path);
     }
 
-    setpath(path) {
-        path.setAttributeNS(null, "stroke-width", this.size);
-        path.setAttributeNS(null, "stroke", this.color);
+    static setpath(elem, path) {
+        path.setAttributeNS(null, "stroke-width", elem.size);
+        path.setAttributeNS(null, "stroke", elem.color);
         path.setAttributeNS(null, "stroke-linecap", "round");
         path.setAttributeNS(null, "stroke-linejoin", "round");
     }
@@ -27,48 +31,49 @@ export default class Stroke {
         };
     }
 
-    draw(c) {
-        if (this.paths.length <= 1) return;
+    //taken and modified from here
+    //https://codepen.io/osublake/pen/BowJed?editors=0010
+    fit() {
+        let path = `M${this.paths[0].x},${this.paths[0].y}`;
 
-        let p = this.paths.at(-1);
-        let midp = this.mid(p, c);
+        for (let i = 0; i < this.paths.length - 1; i++) {
+            let p = i == 0 ? this.paths[i] : this.paths[i - 1];
+            let c = this.paths[i];
+            let n = this.paths[i + 1];
+            let f = i >= this.paths.length - 2 ? n : this.paths[i + 2];
+            
+            let cp1 = {
+                x: c.x + (n.x - p.x) / 6 * Stroke.tension,
+                y: c.y + (n.y - p.y) / 6 * Stroke.tension,
+            };
 
-        //TODO get velocity and make the midpoint the intersection of the line perpendicular at the midpoint and the span of the velocity
-
-        //for debugging
-        let ce = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        let pe = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        let me = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-
-        for (let o of [[c, ce, "blue"], [p, pe, "red"], [midp, me, "green"]]) {
-            //cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" 
-            let i = o[1];
-            i.setAttributeNS(null, "cx", o[0].x);
-            i.setAttributeNS(null, "cy", o[0].y);
-            i.setAttributeNS(null, "r", "2");
-            i.setAttributeNS(null, "stroke", o[2]);
-            i.setAttributeNS(null, "stroke-width", "3");
-            i.setAttributeNS(null, "fill", "red");
-            this.svg.appendChild(i);
+            let cp2 = {
+                x: n.x - (f.x - c.x) / 6 * Stroke.tension,
+                y: n.y - (f.y - c.y) / 6 * Stroke.tension,
+            };
+         
+            path += "C" + [cp1.x, cp1.y, cp2.x, cp2.y, n.x, n.y].join(",");
         }
-        //////////////////
 
-        let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttributeNS(null, "d", `M${p.x} ${p.y} Q${midp.x} ${midp.y} ${c.x} ${c.y}`);
-        this.setpath(path);
-        this.svg.appendChild(path);
+        return path;
+      }
+
+    draw() {
+        if (this.paths.length <= 1) return;
+        this.path.setAttributeNS(null, "d", this.fit());
     }
 
     erase() {
-        this.svg.remove();
+        this.path.remove();
     }
 
     end() {
+        this.draw()
         file.strokes.push(this);
     }
 
     add(c) {
-        this.draw(c);
+        this.draw();
         this.paths.push(c);
     }
 

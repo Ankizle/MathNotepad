@@ -8,6 +8,7 @@
 import Icon from "./ToolkitIcon.vue";
 import state from "@/state";
 import Stroke from "@/stroke";
+import Dot from "@/dot";
 import user from "@/user";
 import events from "@/events"
 
@@ -34,6 +35,10 @@ export default {
             stroke.add(e.center);
             stroke.end();
         });
+        events.listen("tap", e => {
+            if (state.active_toolkit != "Pen") return;
+            stroke = new Dot(user.size.pen, user.color.pen, user.opacity.pen, e.center);
+        })
     },
     methods: {
         click() {
