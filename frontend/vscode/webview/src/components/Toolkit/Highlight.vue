@@ -7,7 +7,6 @@
 <script>
 import Icon from "./ToolkitIcon.vue"
 import state from "@/state";
-import file from "@/file";
 import events from "@/events";
 import Stroke from "@/stroke";
 import user from "@/user";
@@ -18,39 +17,25 @@ export default {
         Icon,
     },
     mounted() {
-
         let stroke;
 
-        events.listen("panstart", d => {
+        events.listen("panstart", e => {
             if (state.active_toolkit != "Highlight") return;
-
-            stroke = new Stroke(file.highlighter.strokes, user.size.highlight, user.color.highlight, state.ctxh);
-            stroke.add(d[0], d[0]);
-        });
-        events.listen("panmove", d => {
-            if (state.active_toolkit != "Highlight") return;
-            stroke.add(...d);
-        });
-        events.listen("panend", d => {
-            if (state.active_toolkit != "Highlight") return;
-
-            stroke.add(...d);
-            file.highlighter.strokes.push(stroke);
-        });
-        events.listen("tap", e => {
-            if (state.active_toolkit != "Highlight") return;
-
-            stroke = new Stroke(file.highlighter.strokes, user.size.highlight, user.color.highlight, state.ctxh);
-
+            stroke = new Stroke(user.size.highlight, user.color.highlight, user.opacity.highlight);
             stroke.add(e.center);
-            file.highlighter.strokes.push(stroke);
+        });
+        events.listen("panmove", e => {
+            if (state.active_toolkit != "Highlight") return;
+            stroke.add(e.center);
+        });
+        events.listen("panend", e => {
+            if (state.active_toolkit != "Highlight") return;
+            stroke.add(e.center);
+            stroke.end();
         });
     },
     methods: {
         click() {
-            state.ctxh.lineWidth = user.size.highlight;
-            state.ctxh.strokeStyle = user.color.highlight;
-
             state.active_toolkit = "Highlight";
         },
     },

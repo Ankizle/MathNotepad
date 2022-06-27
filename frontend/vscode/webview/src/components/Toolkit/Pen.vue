@@ -7,10 +7,9 @@
 <script>
 import Icon from "./ToolkitIcon.vue";
 import state from "@/state";
-import file from "@/file";
-import events from "@/events";
 import Stroke from "@/stroke";
 import user from "@/user";
+import events from "@/events"
 
 export default {
     name: "Toolkit-Pen",
@@ -21,36 +20,23 @@ export default {
 
         let stroke;
 
-        events.listen("panstart", d => {
+        events.listen("panstart", e => {
             if (state.active_toolkit != "Pen") return;
-
-            stroke = new Stroke(file.pen.strokes, user.size.pen, user.color.pen, state.ctx);
-            stroke.add(d[0], d[0]);
+            stroke = new Stroke(user.size.pen, user.color.pen, user.opacity.pen);
+            stroke.add(e.center);
         });
-        events.listen("panmove", d => {
+        events.listen("panmove", e => {
             if (state.active_toolkit != "Pen") return;
-            stroke.add(...d.points);
+            stroke.add(e.center);
         });
-        events.listen("panend", d => {
+        events.listen("panend", e => {
             if (state.active_toolkit != "Pen") return;
-
-            stroke.add(...d);
-            file.pen.strokes.push(stroke);
-        });
-        events.listen("tap", e => {
-            if (state.active_toolkit != "Pen") return;
-
-            stroke = new Stroke(file.pen.strokes, user.size.pen, user.color.pen, state.ctx);
-
-            stroke.add(e, e);
-            file.pen.strokes.push(stroke);
+            stroke.add(e.center);
+            stroke.end();
         });
     },
     methods: {
         click() {
-            state.ctx.lineWidth = user.size.pen;
-            state.ctx.strokeStyle = user.color.pen;
-
             state.active_toolkit = "Pen";
         },
     },

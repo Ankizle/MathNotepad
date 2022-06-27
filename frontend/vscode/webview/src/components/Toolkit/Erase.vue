@@ -8,8 +8,6 @@
 import Icon from "./ToolkitIcon.vue"
 import state from "@/state";
 import events from "@/events";
-import Chunk from "@/chunk";
-import user from "@/user";
 
 export default {
     name: "Toolkit-Erase",
@@ -17,18 +15,14 @@ export default {
         Icon,
     },
     mounted() {
-        events.listen("panmove", e => {
+        events.listen("panstart", () => {
             if (this.state.active_toolkit != "Erase") return;
-
-            let chunks = Chunk.through(e[0].x, e[0].y, user.size.erase, null);
-
-            for (let i of chunks) {
-                events.emit(`erase ${i}`, {
-                    coords: e,
-                    size: user.size.erase,
-                });
-            }
+            this.state.erasing = true;
         });
+        events.listen("panend", () => {
+            if (this.state.active_toolkit != "Erase") return;
+            this.state.erasing = false;
+        })
     },
     data() {
         return {

@@ -13,4 +13,5 @@ export default Vue.reactive({
             Vue.warn("Cannot save in browser");
         }
     },
+    wrap: null,
 });
