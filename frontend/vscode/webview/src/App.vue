@@ -32,3 +32,7 @@ export default {
     z-index: 2;
 }
 </style>
+
+<style>
+@import url(https://cdn.jsdelivr.net/npm/katex@0.16.0/dist/katex.min.css);
+</style>

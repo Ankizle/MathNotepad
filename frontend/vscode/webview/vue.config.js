@@ -9,7 +9,6 @@ module.exports = {
                 const to = pathConfigs.patterns[0].to;
                 pathConfigs.patterns[0].force = true;
 
-                // add other locations.
                 pathConfigs.patterns.unshift({ 
                     from: 'icons',  
                     to: `${to}/icons`,

@@ -14,4 +14,5 @@ export default Vue.reactive({
         }
     },
     wrap: null,
+    mathjax: null,
 });

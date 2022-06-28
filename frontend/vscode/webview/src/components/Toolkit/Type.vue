@@ -8,6 +8,7 @@
 import Icon from "./ToolkitIcon.vue";
 import state from "@/state";
 import events from "@/events";
+import TextBox from "@/textbox";
 
 export default {
     name: "Toolkit-Type",
@@ -17,9 +18,8 @@ export default {
     mounted() {
         events.listen("tap", e => {
             if (this.state.active_toolkit != "Type") return;
-            
-            let coords = [e.center.x, e.center.y];
-            console.log(coords);
+
+            new TextBox(e.center.x, e.center.y);
         });
     },
     data() {

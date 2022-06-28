@@ -58,10 +58,35 @@ export default {
     width: 100%;
     height: 100%;
 }
-#wrapper > input {
-    position: absolute;
-}
 svg > path {
     fill: none;
+}
+
+/* https://codepen.io/chriscoyier/pen/XWKEVLy */
+#wrapper > .textbox {
+    /*declared in js*/
+    position: absolute;
+    display: grid;
+}
+.textbox::after {
+    content: attr(data-replicated-value) " ";
+    white-space: pre-wrap;
+    display: none;
+}
+.textinput {
+    resize: none;
+    overflow: hidden;
+}
+.textbox > .textinput, .textbox::after {
+    border: 1px solid black;
+    padding: 0.5rem;
+    font: inherit;
+
+    grid-area: 1 / 1 / 2 / 2;
+}
+.texttex {
+    position: relative;
+    top: 0;
+    left: 0;
 }
 </style>

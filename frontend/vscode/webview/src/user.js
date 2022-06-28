@@ -15,4 +15,5 @@ export default new Vue.reactive({
         highlight: 0.3,
     },
     eraseop: .5, //what to multiply opacity by to get the (partially) erased version
+    fontsize: 15,
 });

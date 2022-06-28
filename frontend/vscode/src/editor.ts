@@ -82,7 +82,7 @@ export class Editor implements vscode.CustomEditorProvider<NotebookDoc> {
                 <script type="text/javascript"
                     src="${script}"></script>
             </body>
-            </html> 
+            </html>
         `;  
     }
 
