@@ -5,10 +5,11 @@
 </template>
 
 <script>
-import Icon from "./ToolkitIcon.vue"
+import Icon from "@/components/Icon"
 import state from "@/state";
 import events from "@/events";
 import Stroke from "@/stroke";
+import Dot from "@/dot";
 import user from "@/user";
 
 export default {
@@ -32,6 +33,16 @@ export default {
             if (state.active_toolkit != "Highlight") return;
             stroke.add(e.center);
             stroke.end();
+        });
+        events.listen("scrolling", () => {
+            if (stroke != null) {
+                stroke.erase();
+                stroke = null;
+            }
+        });
+        events.listen("tap", e => {
+            if (state.active_toolkit != "Highlight") return;
+            stroke = new Dot(user.size.highlight, user.color.highlight, user.opacity.highlight, e.center);
         });
     },
     methods: {

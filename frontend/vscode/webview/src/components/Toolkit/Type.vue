@@ -5,10 +5,12 @@
 </template>
 
 <script>
-import Icon from "./ToolkitIcon.vue";
+import Icon from "@/components/Icon"
 import state from "@/state";
 import events from "@/events";
-import TextBox from "@/textbox";
+import DocumentType from "@/components/Document/Type";
+import file from '@/file';
+import * as Vue from "vue";
 
 export default {
     name: "Toolkit-Type",
@@ -17,19 +19,26 @@ export default {
     },
     mounted() {
         events.listen("tap", e => {
-            if (this.state.active_toolkit != "Type") return;
+            if (state.active_toolkit != "Type") return;
 
-            new TextBox(e.center.x, e.center.y);
+            for (let i of file.textboxes) {
+                if (i != null && i.clickin(e.center.x, e.center.y)) {
+                    return i.edit();
+                }
+            }
+
+            state.textboxes.push(Vue.h(DocumentType, {
+                x: e.center.x,
+                y: e.center.y,
+            }));
         });
     },
     data() {
-        return {
-            state,
-        };
+        return {};
     },
     methods: {
         click() {
-            this.state.active_toolkit = "Type";
+            state.active_toolkit = "Type";
         },
     },
 }

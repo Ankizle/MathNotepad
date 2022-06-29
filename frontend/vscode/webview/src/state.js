@@ -13,6 +13,7 @@ export default Vue.reactive({
             Vue.warn("Cannot save in browser");
         }
     },
+    strokes: [],
+    textboxes: [],
     wrap: null,
-    mathjax: null,
 });

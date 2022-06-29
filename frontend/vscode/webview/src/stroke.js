@@ -81,12 +81,12 @@ export default class Stroke {
     erase() {
         this.path.remove();
         this.erased = true;
-        file.strokes[this.strokeeidx] = null;
+        file.strokes[this.strokeidx] = null;
     }
 
     end() {
         this.draw();
-        this.strokeidx = file.strokes.push(this);
+        this.strokeidx = file.strokes.push(this) - 1;
     }
 
     add(c) {

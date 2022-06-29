@@ -10,10 +10,18 @@ export default {
     components: {},
     props: {
         typ: String,
+        size: {
+            type: String,
+            default: "2em",
+        },
+        background: {
+            type: String,
+            default: "rgb(98, 159, 238)",
+        },
     },
     computed: {
         style() {
-            return `--mask-image: url(${BaseUri.get()}/icons/${this.typ}.svg);`;
+            return `--size: ${this.size}; --mask-image: url(${BaseUri.get()}/icons/${this.typ}.svg); background: ${this.background}`;
         },
     },
 }
@@ -22,7 +30,6 @@ export default {
 <style scoped>
 .icon {
     display: inline-block;
-    --size: 2em;
 
     width: var(--size);
     height: var(--size);

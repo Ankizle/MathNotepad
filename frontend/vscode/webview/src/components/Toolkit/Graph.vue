@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Icon from "./ToolkitIcon.vue"
+import Icon from "@/components/Icon"
 import state from "@/state";
 
 export default {

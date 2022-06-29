@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Icon from "./ToolkitIcon.vue"
+import Icon from "@/components/Icon"
 import state from "@/state";
 import events from "@/events";
 import Stroke from "@/stroke";
@@ -49,12 +49,20 @@ export default {
             curprec = 0;
             toerase = [];
         });
+        events.listen("scrolling", () => {
+            if (stroke != null) {
+                stroke.erase();
+                stroke = null;
+                curprec = 0;
+                toerase = [];
+            }
+        });
         events.listen("toerase", stroke => {
             if (eraseprec[stroke.typ] < curprec || toerase.includes(stroke)) return;
             else if (eraseprec[stroke.typ] > curprec) {
                 curprec = eraseprec[stroke.typ];
                 for (let i of toerase)
-                    i.changeopacity(o => o / user.eraseop);
+                    if (i != null) i.changeopacity(o => o / user.eraseop);
                 toerase = [];
             }
 

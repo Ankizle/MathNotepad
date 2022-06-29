@@ -13,6 +13,7 @@
     "html2canvas": "^1.4.1",
     "katex": "^0.16.0",
     "path-intersection": "^2.2.1",
+    "v-dragged": "^0.0.5",
     "vue": "^3.2.13"
   },
   "devDependencies": {
