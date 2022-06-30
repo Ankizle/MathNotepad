@@ -1,6 +1,12 @@
-import * as Vue from 'vue';
+import onchange from "on-change"
+import state from "./state"
 
-export default Vue.reactive({
+export default onchange({
     strokes: [],
     textboxes: [],
-});
+}, function() {
+    state.vscode.postMessage({
+        command: "save",
+        text: JSON.stringify(this),
+    });
+})

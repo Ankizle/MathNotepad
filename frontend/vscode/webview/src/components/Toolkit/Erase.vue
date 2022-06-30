@@ -1,7 +1,10 @@
 <template>
-    <div class="cont" v-on:click="click">
+    <div class="cont" @mousedown="clickstart" @mouseup="clickend">
         <Icon typ="Erase" />
     </div>
+    <SettingsTab typ="SettingsErase">
+        <Slider typ="erase" config="size" label="Erase Size"></Slider>
+    </SettingsTab>
 </template>
 
 <script>
@@ -10,11 +13,15 @@ import state from "@/state";
 import events from "@/events";
 import Stroke from "@/stroke";
 import user from "@/user";
+import SettingsTab from "./SettingsTab";
+import Slider from "./Slider";
 
 export default {
     name: "Toolkit-Erase",
     components: {
         Icon,
+        SettingsTab,
+        Slider,
     },
     mounted() {
         let stroke;
@@ -28,17 +35,17 @@ export default {
         let toerase = [];
 
         events.listen("panstart", e => {
-            if (this.state.active_toolkit != "Erase") return;
+            if (!state.active_toolkit.endsWith("Erase")) return;
             stroke = new Stroke("erase", user.size.erase, "white", 1);
             stroke.add(e.center);
         });
         events.listen("panmove", e => {
-            if (this.state.active_toolkit != "Erase") return;
+            if (!state.active_toolkit.endsWith("Erase")) return;
             stroke.add(e.center);
             events.emit("erase", stroke);
         });
         events.listen("panend", e => {
-            if (this.state.active_toolkit != "Erase") return;
+            if (!state.active_toolkit.endsWith("Erase")) return;
             stroke.add(e.center);
             stroke.end();
             stroke.erase();
@@ -72,14 +79,20 @@ export default {
     },
     data() {
         return {
-            state,
+            startcl: 0,
         };
     },
     methods: {
-        click() {
-            this.state.active_toolkit = "Erase";
-        }
-    }
+        clickstart() {
+            this.startcl = Date.now();
+        },
+        clickend() {
+            if (Date.now() - this.startcl < user.holdthresh) 
+                state.active_toolkit = "Erase"; //just a click
+            else
+                state.active_toolkit = "SettingsErase"; //accessing settings
+        },
+    },
 }
 </script>
 

@@ -4,6 +4,8 @@
     </div>
     <SettingsTab typ="SettingsHighlight">
         <ColorPicker typ="highlight"></ColorPicker>
+        <Slider typ="highlight" config="opacity" label="Opacity"></Slider>
+        <Slider typ="highlight" config="size" label="Stroke Size"></Slider>
     </SettingsTab>
 </template>
 
@@ -16,6 +18,7 @@ import Dot from "@/dot";
 import user from "@/user";
 import SettingsTab from "./SettingsTab";
 import ColorPicker from "./ColorPicker";
+import Slider from "./Slider";
 
 export default {
     name: "Toolkit-Highlight",
@@ -23,21 +26,22 @@ export default {
         Icon,
         SettingsTab,
         ColorPicker,
+        Slider,
     },
     mounted() {
         let stroke;
 
         events.listen("panstart", e => {
-            if (state.active_toolkit != "Highlight") return;
+            if (!state.active_toolkit.endsWith("Highlight")) return;
             stroke = new Stroke("highlight", user.size.highlight, user.color.highlight, user.opacity.highlight);
             stroke.add(e.center);
         });
         events.listen("panmove", e => {
-            if (state.active_toolkit != "Highlight") return;
+            if (!state.active_toolkit.endsWith("Highlight")) return;
             stroke.add(e.center);
         });
         events.listen("panend", e => {
-            if (state.active_toolkit != "Highlight") return;
+            if (!state.active_toolkit.endsWith("Highlight")) return;
             stroke.add(e.center);
             stroke.end();
         });
@@ -48,7 +52,7 @@ export default {
             }
         });
         events.listen("tap", e => {
-            if (state.active_toolkit != "Highlight") return;
+            if (!state.active_toolkit.endsWith("Highlight")) return;
             stroke = new Dot(user.size.highlight, user.color.highlight, user.opacity.highlight, e.center);
         });
     },

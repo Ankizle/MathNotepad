@@ -14,7 +14,7 @@ export default {
     },
     computed: {
         isactive() {
-            if (state.active_toolkit == this.typ) return `height: ${this.$refs.settings.scrollHeight}px !important; border-top: 1px solid rgb(77, 81, 86);`;
+            if (state.active_toolkit == this.typ) return `display: block !important; border-top: 1px solid rgb(77, 81, 86);`;
             return "";
         },
     },
@@ -24,10 +24,12 @@ export default {
 <style scoped>
 
 .settings {
-    width: 4em;
-    padding: 0;
+    background-color: rgb(49, 53, 57);
+    width: 8em;
+    padding: 10pt;
+    border-radius: 0 1em 1em 0;
 
-    height: 0;
+    display: none;
     overflow: hidden;
 }
 </style>

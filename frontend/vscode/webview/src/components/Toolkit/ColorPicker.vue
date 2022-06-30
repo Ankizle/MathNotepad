@@ -33,11 +33,14 @@ export default {
     border: none;
     padding: 0;
     margin: 0;
+    background: none;
 }
 .colorpicker::-webkit-color-swatch-wrapper {
     padding: 0;
 }
 .colorpicker::-webkit-color-swatch {
+    border-radius: 1em;
     border: none;
+    background: none;
 }
 </style>

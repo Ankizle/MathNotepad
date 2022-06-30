@@ -144,6 +144,7 @@ export default {
     font: inherit;
     outline: 3px;
     z-index: 2;
+    border-radius: 5pt;
 }
 .measure {
     position: absolute;

@@ -1,15 +1,16 @@
-import * as vscode from "vscode"
-import backend from "./backend";
+import { debug } from "console";
+import * as vscode from "vscode";
 import { NotebookDoc } from "./notebookdoc";
+import * as fs from "fs";
 
 const viewtype = "mntb.notebook";
+let uri: any;
 
 export class Editor implements vscode.CustomEditorProvider<NotebookDoc> {
 
     public ctx: vscode.ExtensionContext;
-    public ntbdoc: any; //notebook document
 
-    constructor(ctx: vscode.ExtensionContext) {
+    constructor(ctx: vscode.ExtensionContext, ) {
         this.ctx = ctx;
     }
 
@@ -32,8 +33,9 @@ export class Editor implements vscode.CustomEditorProvider<NotebookDoc> {
 		return vscode.window.registerCustomEditorProvider(viewtype, this);
     }
 
-    openCustomDocument(uri: vscode.Uri, octx: { backupId?: string }, cancel: vscode.CancellationToken) {
-        this.ntbdoc = backend.OpenNotebook(uri.path); //open the document with the backend
+    openCustomDocument(uriv: vscode.Uri, octx: { backupId?: string }, cancel: vscode.CancellationToken) {
+        uri = uriv;
+        console.log(uri);
         return new NotebookDoc(this, uri);
     }
 
@@ -86,10 +88,11 @@ export class Editor implements vscode.CustomEditorProvider<NotebookDoc> {
         `;  
     }
 
-    private onMessage(e: any) {
+    onMessage(e: any) {
         switch (e.command) {
             case "save":
-                console.log(e.text);
+                let urip = uri.path;
+                fs.writeFileSync(urip, e.text);
                 break;
         }
 	}

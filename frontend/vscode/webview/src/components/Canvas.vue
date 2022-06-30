@@ -26,21 +26,18 @@ export default {
         this.hammer = new Hammer.Manager(this.wrap);
         state.hammer = this.hammer;
 
-        this.hammer.add(new Hammer.Pan());
+        this.hammer.add(new Hammer.Pan({ threshold: 0, }));
         this.hammer.add(new Hammer.Tap());
         this.hammer.add(new Hammer.Pinch());
 
         let panevents = ["panstart", "panmove", "panend"];
         for (let i of panevents)
             this.hammer.on(i, e => {
-                e.preventDefault();
                 e.center.y += document.documentElement.scrollTop;
                 events.emit(i, e);
             });
 
-        this.hammer.on("tap", e => {
-            events.emit("tap", e)
-        });
+        this.hammer.on("tap", e => events.emit("tap", e));
 
         //scroll with mouse
         window.onscroll = () => {
@@ -82,7 +79,7 @@ export default {
 #wrapper {
     height: 100vh;
     width: 100vw;
-    touch-action: none;
+    font-family: Verdana;
 }
 #highlighter {
     opacity: .3;

@@ -4,6 +4,7 @@
     </div>
     <SettingsTab typ="SettingsPen">
         <ColorPicker typ="pen"></ColorPicker>
+        <Slider typ="pen" config="size" label="Stroke Size"></Slider>
     </SettingsTab>
 </template>
 
@@ -16,6 +17,7 @@ import user from "@/user";
 import events from "@/events"
 import SettingsTab from "./SettingsTab";
 import ColorPicker from "./ColorPicker";
+import Slider from "./Slider";
 
 export default {
     name: "Toolkit-Pen",
@@ -23,22 +25,23 @@ export default {
         Icon,
         SettingsTab,
         ColorPicker,
+        Slider,
     },
     mounted() {
 
         let stroke;
 
         events.listen("panstart", e => {
-            if (state.active_toolkit != "Pen") return;
+            if (!state.active_toolkit.endsWith("Pen")) return;
             stroke = new Stroke("pen", user.size.pen, user.color.pen, user.opacity.pen);
             stroke.add(e.center);
         });
         events.listen("panmove", e => {
-            if (state.active_toolkit != "Pen" || stroke == null) return;
+            if (!state.active_toolkit.endsWith("Pen") || stroke == null) return;
             stroke.add(e.center);
         });
         events.listen("panend", e => {
-            if (state.active_toolkit != "Pen" || stroke == null) return;
+            if (!state.active_toolkit.endsWith("Pen") || stroke == null) return;
             stroke.add(e.center);
             stroke.end();
             stroke = null;
@@ -50,7 +53,7 @@ export default {
             }
         });
         events.listen("tap", e => {
-            if (state.active_toolkit != "Pen") return;
+            if (!state.active_toolkit.endsWith("Pen")) return;
             stroke = new Dot(user.size.pen, user.color.pen, user.opacity.pen, e.center);
             stroke = null;
         });

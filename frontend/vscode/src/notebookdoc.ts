@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
 import { Editor } from "./editor";
-import backend from "./backend";
 
 const ref = require("ref-napi");
 
@@ -15,7 +14,7 @@ export class NotebookDoc implements vscode.CustomDocument {
     }
 
     dispose(): void {
-        backend.CloseNotebook(this.editor.ntbdoc);
+        //TODO
     }
 
 }

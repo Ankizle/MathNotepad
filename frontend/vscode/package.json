@@ -29,10 +29,9 @@
   	"main": "./out/extension.js",
   	"scripts": {
   	  	"vscode:prepublish": "npm run compile",
-  	  	"cplib": "mkdir -p ./out/ && cp ./src/libmntb.so ./out/",
   	  	"webview": "cd webview && npm run build",
-  	  	"compile": "npm run webview && npm run cplib && tsc -p ./",
-  	  	"watch": "npm run webview && npm run cplib && tsc -watch -p ./",
+  	  	"compile": "npm run webview && tsc -p ./",
+  	  	"watch": "npm run webview && tsc -watch -p ./",
   	  	"pretest": "npm run compile && npm run lint",
   	  	"lint": "eslint src --ext ts",
   	  	"test": "node ./out/test/runTest.js"
