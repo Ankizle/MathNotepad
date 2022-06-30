@@ -52,8 +52,6 @@ export default {
     width: 4em;
     background-color: rgb(49, 53, 57);
     border-top: 1px solid rgb(77, 81, 86);
-
-    transition: width .25s, border-radius .3s;
 }
 .bigger-toolkit-item {
     width: 5em;

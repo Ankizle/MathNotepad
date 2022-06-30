@@ -1,7 +1,10 @@
 <template>
-    <div class="cont" v-on:click="click">
+    <div class="cont" @mousedown="clickstart" @mouseup="clickend">
         <Icon typ="Pen" />
     </div>
+    <SettingsTab typ="SettingsPen">
+        <ColorPicker typ="pen"></ColorPicker>
+    </SettingsTab>
 </template>
 
 <script>
@@ -11,11 +14,15 @@ import Stroke from "@/stroke";
 import Dot from "@/dot";
 import user from "@/user";
 import events from "@/events"
+import SettingsTab from "./SettingsTab";
+import ColorPicker from "./ColorPicker";
 
 export default {
     name: "Toolkit-Pen",
     components: {
         Icon,
+        SettingsTab,
+        ColorPicker,
     },
     mounted() {
 
@@ -45,12 +52,24 @@ export default {
         events.listen("tap", e => {
             if (state.active_toolkit != "Pen") return;
             stroke = new Dot(user.size.pen, user.color.pen, user.opacity.pen, e.center);
+            stroke = null;
         });
     },
+    data() {
+        return {
+            startcl: 0,
+        };
+    },
     methods: {
-        click() {
-            state.active_toolkit = "Pen";
+        clickstart() {
+            this.startcl = Date.now();
         },
+        clickend() {
+            if (Date.now() - this.startcl < user.holdthresh) 
+                state.active_toolkit = "Pen"; //just a click
+            else
+                state.active_toolkit = "SettingsPen"; //accessing settings
+        }
     },
 }
 </script>

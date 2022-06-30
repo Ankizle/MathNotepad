@@ -7,8 +7,8 @@ export default new Vue.reactive({
         erase: 20,
     },
     color: {
-        pen: "black",
-        highlight: "rgb(255, 234, 0)",
+        pen: "#000000",
+        highlight: "#ffea00",
     },
     opacity: {
         pen: 1,
@@ -16,4 +16,5 @@ export default new Vue.reactive({
     },
     eraseop: .5, //what to multiply opacity by to get the (partially) erased version
     fontsize: 12,
+    holdthresh: 300,
 });

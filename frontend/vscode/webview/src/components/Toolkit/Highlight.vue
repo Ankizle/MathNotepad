@@ -1,7 +1,10 @@
 <template>
-    <div class="cont" v-on:click="click">
+    <div class="cont" @mousedown="clickstart" @mouseup="clickend">
         <Icon typ="Highlight" />
     </div>
+    <SettingsTab typ="SettingsHighlight">
+        <ColorPicker typ="highlight"></ColorPicker>
+    </SettingsTab>
 </template>
 
 <script>
@@ -11,11 +14,15 @@ import events from "@/events";
 import Stroke from "@/stroke";
 import Dot from "@/dot";
 import user from "@/user";
+import SettingsTab from "./SettingsTab";
+import ColorPicker from "./ColorPicker";
 
 export default {
     name: "Toolkit-Highlight",
     components: {
         Icon,
+        SettingsTab,
+        ColorPicker,
     },
     mounted() {
         let stroke;
@@ -45,10 +52,21 @@ export default {
             stroke = new Dot(user.size.highlight, user.color.highlight, user.opacity.highlight, e.center);
         });
     },
+    data() {
+        return {
+            startcl: 0,
+        };
+    },
     methods: {
-        click() {
-            state.active_toolkit = "Highlight";
+        clickstart() {
+            this.startcl = Date.now();
         },
+        clickend() {
+            if (Date.now() - this.startcl < user.holdthresh) 
+                state.active_toolkit = "Highlight"; //just a click
+            else
+                state.active_toolkit = "SettingsHighlight"; //accessing settings
+        }
     },
 }
 </script>

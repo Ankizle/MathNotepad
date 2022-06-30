@@ -26,27 +26,21 @@ export default {
         this.hammer = new Hammer.Manager(this.wrap);
         state.hammer = this.hammer;
 
+        this.hammer.add(new Hammer.Pan());
         this.hammer.add(new Hammer.Tap());
+        this.hammer.add(new Hammer.Pinch());
 
-        let panevents = ["touchstart", "touchmove", "touchend"];
+        let panevents = ["panstart", "panmove", "panend"];
         for (let i of panevents)
-            this.wrap.addEventListener(i, e => {
-                e.preventDefault()
-                if (e.touches.length != 1) return;
-                e = e.touches[0];
-                e.center = {
-                    x: e.clientX,
-                    y: document.documentElement.scrollTop + e.clientY,
-                }
-                events.emit(i.replace("touch", "pan"), e);
+            this.hammer.on(i, e => {
+                e.preventDefault();
+                e.center.y += document.documentElement.scrollTop;
+                events.emit(i, e);
             });
 
         this.hammer.on("tap", e => {
-            console.log("SSSSSSSS")
             events.emit("tap", e)
         });
-
-        //for scrolling
 
         //scroll with mouse
         window.onscroll = () => {
@@ -55,24 +49,19 @@ export default {
         window.onscroll();
 
         //scroll with two finger touch
-        let touchp = 0;
-        this.wrap.addEventListener("touchstart", e => {
-            e.preventDefault()
-            if (e.touches.length != 2) return;
-            events.emit("scrolling");
-            touchp = e.touches[0].clientY;
+        const scrollunits = 1;
+        let lastp = 0;
+        this.hammer.on("pinchstart", e => {
+            lastp = e.center.y;
+        })
+        this.hammer.on("pinchmove", e => {
+            e.preventDefault();
+            window.scrollBy(0, (lastp - e.center.y) * scrollunits);
+            lastp = e.center.y;
         });
-        this.wrap.addEventListener("touchmove", e => {
-            e.preventDefault()
-            if (e.touches.length != 2) return;
-            events.emit("scrolling");
-            let delta = touchp - e.touches[0].clientY;
-            touchp = e.touches[0].clientY;
-            window.scrollBy({
-                left: 0,
-                top: delta * 40,
-                behavior: "smooth",
-            });
+        this.hammer.on("pinchend", e => {
+            //TODO: momentum scroll
+            console.log(e);
         });
 
         state.winwid = this.winwid;
@@ -93,6 +82,7 @@ export default {
 #wrapper {
     height: 100vh;
     width: 100vw;
+    touch-action: none;
 }
 #highlighter {
     opacity: .3;
