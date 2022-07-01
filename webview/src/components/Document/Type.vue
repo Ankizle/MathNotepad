@@ -4,7 +4,7 @@
         <span class="rendered" v-show="!typing && !mv.dragging" ref="rendered"></span>
         <span class="measure input" ref="measure"></span>
 
-        <div class="util">
+        <div class="util" v-if="movable">
             <Icon typ="Move" size="1.1em" v-show="typing || mv.dragging" class="move" ref="move" @touchstart="touch_dragstart" @touchend="touch_dragend" @mousedown="dragstart" @mouseup="dragend" />
         </div>
     </div>
@@ -24,6 +24,14 @@ export default {
     props: {
         x: Number,
         y: Number,
+        position: {
+            type: String,
+            default: "absolute",
+        },
+        movable: {
+            type: Boolean,
+            default: true,
+        },
     },
     data() {
         return {
@@ -63,7 +71,7 @@ export default {
     },
     computed: {
         style() {
-            return `--x: ${this.xv - 10}px; --y: ${this.yv - 10}px`;
+            return `--x: ${this.xv - 10}px; --y: ${this.yv - 10}px; --position: ${this.position};`;
         },
     },
     methods: {
@@ -146,7 +154,7 @@ export default {
 
 <style scoped>
 .box {
-    position: absolute;
+    position: var(--position);
     left: var(--x);
     top: var(--y);
     display: grid;

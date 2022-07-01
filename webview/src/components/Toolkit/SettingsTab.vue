@@ -14,7 +14,16 @@ export default {
     },
     computed: {
         isactive() {
-            if (state.active_toolkit == this.typ) return `display: block !important; border-top: 1px solid rgb(77, 81, 86);`;
+            
+            if (state.active_toolkit == this.typ) {
+                console.log(this.$refs.settings.scrollHeight)
+                return `
+                    max-height: ${this.$refs.settings.scrollHeight}px !important;
+                    width: 8em !important;
+                    padding: 10pt !important;
+                    border-top: 1px solid rgb(77, 81, 86);
+                `;
+            }
             return "";
         },
     },
@@ -25,11 +34,14 @@ export default {
 
 .settings {
     background-color: rgb(49, 53, 57);
-    width: 8em;
-    padding: 10pt;
+    width: 0;
+    box-sizing: border-box;
+    padding: 0;
     border-radius: 0 1em 1em 0;
+    user-select: none;
 
-    display: none;
+    max-height: 0;
+    transition: all 1s ease;
     overflow: hidden;
 }
 </style>

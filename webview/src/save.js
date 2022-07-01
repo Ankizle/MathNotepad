@@ -3,8 +3,8 @@ import file from "./file";
 
 export default function save() {
     let encoded = {
-        strokes: file.strokes.map(i => i.encode()),
-        textboxes: file.textboxes.map(i => i.encode()),
+        strokes: file.strokes.filter(i => i).map(i => i.encode()),
+        textboxes: file.textboxes.filter(i => i).map(i => i.encode()),
     };
 
 
