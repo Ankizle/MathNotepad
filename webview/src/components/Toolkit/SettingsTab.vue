@@ -14,9 +14,7 @@ export default {
     },
     computed: {
         isactive() {
-            
             if (state.active_toolkit == this.typ) {
-                console.log(this.$refs.settings.scrollHeight)
                 return `
                     max-height: ${this.$refs.settings.scrollHeight}px !important;
                     width: 8em !important;

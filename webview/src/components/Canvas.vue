@@ -1,10 +1,17 @@
 <template>
     <div id="wrapper">
+
+        <svg id="maincvs" xmlns="http://www.w3.org/2000/svg"></svg>
+
         <!-- for texboxes -->
         <template v-for="v in textboxes" :key="v">
             <component :is="v"></component>
         </template>
-        <svg id="maincvs" xmlns="http://www.w3.org/2000/svg"></svg>
+
+        <!-- for graphs -->
+        <template v-for="v in graphs" :key="v">
+            <component :is="v"></component>
+        </template>
     </div>
 </template>
 
@@ -79,6 +86,7 @@ export default {
             winhei: document.documentElement.clientHeight,
             textboxes: state.textboxes,
             strokes: state.strokes,
+            graphs: state.graphs,
         };
     },
 }
@@ -114,5 +122,6 @@ body::-webkit-scrollbar {
 }
 svg > path {
     fill: none;
+    z-index: 4;
 }
 </style>

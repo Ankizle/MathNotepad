@@ -99,7 +99,7 @@ export default {
             this.$refs.input.style.height = `${hei < 20 ? 20 : hei}px`;
         },
         bounds() {
-            return [this.xv, this.yv, this.xv + this.$refs.box.clientWidth, this.$refs.box.clientHeight]
+            return [this.xv, this.yv, this.xv + this.$refs.box.clientWidth, this.yv + this.$refs.box.clientHeight]
         },
         clickin(x, y) {
             let bounds = this.bounds();

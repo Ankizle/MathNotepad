@@ -22,11 +22,9 @@ export default {
         events.listen("tap", e => {
             if (state.active_toolkit != "Type") return;
 
-            for (let i of file.textboxes) {
-                if (i != null && i.clickin(e.center.x, e.center.y)) {
+            for (let i of file.textboxes)
+                if (i != null && i.clickin(e.center.x, e.center.y))
                     return i.edit();
-                }
-            }
 
             state.textboxes.push(Vue.h(DocumentType, {
                 x: e.center.x,

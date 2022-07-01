@@ -15,5 +15,6 @@ export default Vue.reactive({
     },
     strokes: [],
     textboxes: [],
+    graphs: [],
     wrap: null,
 });

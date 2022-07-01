@@ -5,6 +5,7 @@ export default new Vue.reactive({
         pen: 4,
         highlight: 30,
         erase: 20,
+        graph: 15,
     },
     color: {
         pen: "#000000",
