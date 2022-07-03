@@ -57,7 +57,7 @@ export default {
         events.listen("tap", e => {
             if (!state.active_toolkit.endsWith("Pen")) return;
 
-            stroke = new Dot(user.size.pen, user.color.pen, user.opacity.pen, e.center);
+            stroke = Dot.make("pen", user.size.pen, user.color.pen, user.opacity.pen, e.center);
             stroke = null;
             save();
         });

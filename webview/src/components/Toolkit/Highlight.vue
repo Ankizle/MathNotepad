@@ -55,7 +55,7 @@ export default {
         });
         events.listen("tap", e => {
             if (!state.active_toolkit.endsWith("Highlight")) return;
-            stroke = new Dot(user.size.highlight, user.color.highlight, user.opacity.highlight, e.center);
+            stroke = Dot.make("highlight", user.size.highlight, user.color.highlight, user.opacity.highlight, e.center);
             save();
         });
     },

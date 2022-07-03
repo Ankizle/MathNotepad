@@ -1,73 +1,37 @@
-import state from "./state";
 import Stroke from "./stroke";
 
 export default class Dot {
-    constructor(size, color, opacity, c) {
-        this.size = size;
-        this.radius = this.size / 8;
-        this.color = color;
-        this.opacity = opacity
-
-        this.c = c;
-
-        this.path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        Stroke.setpath(this, this.path);
-        this.path.style = `opacity:${opacity}`;
-        state.maincvs.appendChild(this.path);
-
-        this.draw();
-    }
-
-    changeopacity(f) {
-        let newop = f(this.opacity);
-        this.opacity = newop;
-        this.path.style = `opacity:${this.opacity};`
-    }
-
-    make() {
+    static make(typ, size, color, opacity, c) {
+        let stroke = new Stroke(typ, size, color, opacity);
+        let r = size / 8;
 
         let
-            cx = this.c.x,
-            cy = this.c.y,
-            cxr = cx + this.radius,
-            cyr = cy + this.radius,
-            cxe = cx - this.radius,
-            cye = cy - this.radius;
+            cx = c.x,
+            cy = c.y,
+            cxr = cx + r,
+            cyr = cy + r,
+            cxe = cx - r,
+            cye = cy - r;
 
-        let d = `M${cx},${cy}`;
-        d += `L${cx},${cyr}`; //line straight up by the radius
-        d += `Q${cxr},${cyr},${cxr},${cy}`;
-        d += `Q${cxr},${cye},${cx},${cye}`;
-        d += `Q${cxe},${cye},${cxe},${cy}`;
-        d += `Q${cxe},${cyr},${cx},${cyr}`;
-        d += "Z";
-        return d;
-    }
+        let paths = [
+            c,
+            { x: cx, y: cyr }, //line straight down from the radius
+            { x: cx + (r / 2), y: cy + (r / 2)},
+            { x: cxr, y: cy},
+            { x: cx + (r / 2), y: cy - (r / 2)},
+            { x: cx, y: cye},
+            { x: cx - (r / 2), y: cy - (r / 2)},
+            { x: cxe, y: cy},
+            { x: cx - (r / 2), y: cy + (r / 2)},
+            { x: cx, y: cyr}, //back to start
+        ];
 
-    draw() {
-        this.path.setAttributeNS(null, "d", this.make());
-    }
+        for (let i of paths)
+            stroke.add(i);
 
-    svgInf() {
-        return this.setpath();
-    }
+        stroke.draw();
+        stroke.end();
 
-    erase() {
-        this.path.remove();
-    }
-
-    encode() {
-        return {
-            size: this.size,
-            color: this.color,
-            opacity: this.opacity,
-            path: this.make(),
-        };
-    }
-
-    static load(data) {
-        let stroke = new Stroke(data.typ, data.size, data.color, data.opacity);
-        stroke.path.setAttributeNS(null, "d", data.path);
         return stroke;
     }
 }

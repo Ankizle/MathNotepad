@@ -3,8 +3,8 @@
         <li id="Type" :class="`toolkit-item ${isactive(`Type`)}`"><Type/></li>
         <li id="Pen" :class="`toolkit-item ${isactive(`Pen`)}`"><Pen/></li>
         <li id="Highlight" :class="`toolkit-item ${isactive(`Highlight`)}`"><Highlight /></li>
+        <li id="Scissors" :class="`toolkit-item ${isactive(`Scissors`)}`"><Scissors /></li>
         <li id="Erase" :class="`toolkit-item ${isactive(`Erase`)}`"><Erase /></li>
-        <li id="Graph" :class="`toolkit-item ${isactive(`Graph`)}`"><Graph /></li>
     </ul>
 </template>
 
@@ -13,7 +13,7 @@ import Type from "./Toolkit/Type";
 import Pen from "./Toolkit/Pen";
 import Highlight from "./Toolkit/Highlight";
 import Erase from "./Toolkit/Erase";
-import Graph from "./Toolkit/Graph";
+import Scissors from "./Toolkit/Scissors";
 
 import state from "@/state";
 
@@ -24,7 +24,7 @@ export default {
         Pen,
         Highlight,
         Erase,
-        Graph,
+        Scissors,
     },
     data() {
         return {

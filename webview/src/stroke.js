@@ -7,11 +7,12 @@ export default class Stroke {
 
     static tension = 1;
 
-    constructor(typ, size, color, opacity) {
+    constructor(typ, size, color, opacity, dasharray) {
         this.typ = typ;
         this.size = size;
         this.color = color;
         this.opacity = opacity
+        this.dasharray = dasharray
         this.paths = [];
 
         this.path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -26,11 +27,12 @@ export default class Stroke {
         });
     }
 
-    static setpath(elem, path, size, color) {
-        path.setAttributeNS(null, "stroke-width", size ?? elem.size);
-        path.setAttributeNS(null, "stroke", color ?? elem.color);
+    static setpath(elem, path) {
+        path.setAttributeNS(null, "stroke-width", elem.size);
+        path.setAttributeNS(null, "stroke", elem.color);
         path.setAttributeNS(null, "stroke-linecap", "round");
         path.setAttributeNS(null, "stroke-linejoin", "round");
+        path.setAttributeNS(null, "stroke-dasharray", elem.dasharray ? elem.dasharray.join(",") : "1");
     }
 
     changeopacity(f) {
@@ -75,7 +77,50 @@ export default class Stroke {
 
     async draw() {
         if (this.paths.length <= 1) return;
-        this.path.setAttributeNS(null, "d", this.fit());
+        this.path.setAttributeNS(null, "d", this.fit()
+            + (this.doConnect ? 
+            `L${this.paths.at(-1).x},${this.paths.at(-1).y},${this.paths[0].x},${this.paths[1].y}` : "")
+        );
+    }
+
+    getd() {
+        return this.path.getAttributeNS(null, "d");
+    }
+
+    parsed() {
+        this.path.removeAttribute("transform");
+
+        let d = this.getd();
+
+        //list all coordinates used
+        let coords = d.match(
+            /((\d+(\.?)\d+),(\d+(\.?)\d+)(?=,))|((?<=,)(\d+(\.?)\d+),(\d+(\.?)\d+))|((?<!,)(\d+(\.?)\d+),(\d+(\.?)\d+)(?!,))/g
+        );
+
+        let coordsm = coords.map(v => v.split(",").map(parseFloat)).map(v => {
+            return {
+                x: v[0],
+                y: v[1],
+            };
+        });
+
+        this.paths = coordsm;
+    }
+
+    transform(x, y) {
+        this.path.removeAttribute("transform");
+        this.paths = this.paths.map(v => {
+            return {
+                x: v.x + x,
+                y: v.y + y,
+            };
+        });
+        this.draw();
+    }
+
+    connect() {
+        this.doConnect = true;
+        this.draw();
     }
 
     erase() {
@@ -108,9 +153,16 @@ export default class Stroke {
         };
     }
 
+    //determine if a line segment (with width) overlaps with the stroke
+    intersects(p1, p2, w) {
+        p1, p2, w;
+    }
+
     static load(data) {
         let stroke = new Stroke(data.typ, data.size, data.color, data.opacity);
         stroke.path.setAttributeNS(null, "d", data.path);
+        stroke.parsed();
+        stroke.fit();
         stroke.pushto();
         return stroke;
     }

@@ -120,7 +120,7 @@ body {
 body::-webkit-scrollbar {
     display: none;
 }
-svg > path {
+svg > g, svg > path {
     fill: none;
     z-index: 4;
 }
