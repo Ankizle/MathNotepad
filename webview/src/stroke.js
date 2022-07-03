@@ -1,11 +1,11 @@
 import events from "./events";
 import file from "./file";
 import state from "./state";
-import * as intersect from "path-intersection";
 
 export default class Stroke {
 
     static tension = 1;
+    static intprec = 15;
 
     constructor(typ, size, color, opacity, dasharray) {
         this.typ = typ;
@@ -22,9 +22,16 @@ export default class Stroke {
 
         events.listen("erase", eraser => {
             if (typ == "erase" || this.erased) return; //we don't want to erase the eraser
-            if (intersect(eraser.fit(), this.fit()).length != 0)
+            if (this.intersectsLS(eraser))
                 events.emit("toerase", this);
         });
+    }
+
+    lastTwo() {
+        let s = new Stroke(this.typ, this.size, this.color, this.opacity, this.dasharray);
+        s.add(this.paths.at(-2));
+        s.add(this.paths.at(-1));
+        return s;
     }
 
     static setpath(elem, path) {
@@ -138,9 +145,13 @@ export default class Stroke {
         this.pushto();
     }
 
-    add(c) {
-        this.draw();
+    addnd(c) {
         this.paths.push(c);
+    }
+
+    add(c) {
+        this.addnd(c);
+        this.draw();
     }
 
     encode() {
@@ -154,8 +165,47 @@ export default class Stroke {
     }
 
     //determine if a line segment (with width) overlaps with the stroke
-    intersects(p1, p2, w) {
-        p1, p2, w;
+    intersectsLS(s2) {
+        let l1 = this.path.getTotalLength();
+        let l2 = s2.path.getTotalLength();
+
+        for (let i = 0; i < l1; i+=Stroke.intprec) {
+            for (let j = 0; j < l2; j+=Stroke.intprec) {
+                let cj = s2.path.getPointAtLength(j)
+                let ci = this.path.getPointAtLength(i)
+                let x = (ci.x - cj.x);
+                let y = (ci.y - cj.y); 
+                let d = Math.sqrt(x ** 2 + y ** 2);
+
+                if (
+                    d <= ((this.size + s2.size) / 2)
+                ) return true;
+
+                let next = s2.path.getPointAtLength(j + Stroke.intprec);
+                let deltay = (next.y - cj.y), deltax = (next.x - cj.x);
+
+                let cost = deltax;
+                let sint = deltay;
+                let cosmsin = cost - sint;
+                let cospsin = cost + sint;
+                let sol = (ci.y - cj.y) * cosmsin - (ci.x - cj.x) * cospsin;
+
+                if (
+                    d <= ((this.size + s2.size) / 2) + Stroke.intprec &&
+                    sol <= (s2.size * Math.sqrt(2))
+                ) return true;
+            }
+        }
+
+        return false;
+    }
+
+    async encompass(s2) {
+        //we go through all the points on s2
+        //we draw a line going straight up, left, right, and down
+        //if at least 2 of these intersect with s1, we've got a hit
+        if (await this.intersectsLS(s2)) return true;
+        return false;
     }
 
     static load(data) {

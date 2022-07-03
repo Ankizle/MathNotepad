@@ -11,7 +11,6 @@ import Stroke from "@/stroke";
 import user from "@/user";
 import events from "@/events"
 import file from '@/file';
-import * as intersect from "path-intersection";
 
 export default {
     name: "Toolkit-Pen",
@@ -22,7 +21,7 @@ export default {
 
         let stroke;
 
-        events.listen("panstart", e => {
+        events.listen("panstart", async e => {
             if (!state.active_toolkit.endsWith("Scissors")) return;
             if (stroke != null) {
                 if (document.elementFromPoint(e.center.x, e.center.y) == stroke.path) {
@@ -36,7 +35,7 @@ export default {
                     this.movingwhat.push(stroke);
 
                     for (let i of file.strokes) {
-                        if (intersect(stroke.path, i.path).length != 0)
+                        if (await stroke.encompass(i))
                             this.movingwhat.push(i);
                     }
 

@@ -43,7 +43,12 @@ export default {
         events.listen("panmove", e => {
             if (!state.active_toolkit.endsWith("Erase")) return;
             stroke.add(e.center);
-            events.emit("erase", stroke);
+
+            (async() => {
+                let lt = stroke.lastTwo();
+                events.emit("erase", lt);
+                lt.erase();
+            })()
         });
         events.listen("panend", e => {
             if (!state.active_toolkit.endsWith("Erase")) return;
